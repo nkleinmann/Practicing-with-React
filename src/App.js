@@ -9,10 +9,12 @@ class App extends Component {
     this.state = {
       monsters: [],
     };
+    console.log('constructor')
   }
 
   // method gets run when component is mounted on page/to the DOM the first time, only happens one time unless unmounted and remounted
   componentDidMount() {
+    console.log('componentDidMount')
     // will fetch data and use promise to get response
     fetch('https://jsonplaceholder.typicode.com/users')
       // .then(response => console.log(response))
@@ -27,8 +29,24 @@ class App extends Component {
   }
 
   render(){
+    console.log('render')
     return (
       <div className="App">
+        <input 
+          className='search-box' 
+          type='search' 
+          placeholder='search monsters' 
+          onChange={(event) => {
+          // console.log(event.target.value)
+          const searchString = event.target.value.toLowerCase()
+          const filteredMonsters = this.state.monsters.filter((monster) => {
+            return monster.name.toLowerCase().includes(event.target.value)
+          })
+
+          this.setState(() => {
+            return { monsters: filteredMonsters }
+          })
+        }} />
         {this.state.monsters.map((monster) => {
           return <h1 key={monster.id}>{monster.name}</h1>;
         })}
