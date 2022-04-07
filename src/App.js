@@ -29,11 +29,26 @@ class App extends Component {
       ))
   }
 
+  onSearchChange = (event) => {
+    // console.log({startingArray: this.state.monsters})
+    // console.log(event.target.value)
+    const searchField = event.target.value.toLowerCase()
+
+    this.setState(() => {
+      return { searchField }
+    }, () => {
+       // console.log({endingArray: this.state.monsters})
+    })
+  }
+
   render(){
     console.log('render')
 
-    const filteredMonsters = this.state.monsters.filter((monster) => {
-      return monster.name.toLowerCase().includes(this.state.searchField)
+    // destructuring - more readable optimization, and changing onSearchChange so anonymous function is no longer in code and requiring unecessary re-renders 
+    const { monsters, searchField } = this.state
+    const { onSearchChange } = this
+    const filteredMonsters = monsters.filter((monster) => {
+      return monster.name.toLowerCase().includes(searchField)
     })
     return (
       <div className="App">
@@ -41,17 +56,7 @@ class App extends Component {
           className='search-box' 
           type='search' 
           placeholder='search monsters' 
-          onChange={(event) => {
-            // console.log({startingArray: this.state.monsters})
-            // console.log(event.target.value)
-            const searchField = event.target.value.toLowerCase()
-
-            this.setState(() => {
-              return { searchField }
-            }, () => {
-              // console.log({endingArray: this.state.monsters})
-            })
-        }} />
+          onChange={onSearchChange} />
         {filteredMonsters.map((monster) => {
           return <h1 key={monster.id}>{monster.name}</h1>;
         })}
