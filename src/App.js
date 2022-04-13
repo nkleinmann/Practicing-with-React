@@ -17,6 +17,7 @@ import './App.css'
 const App = () => {
 
   const [searchField, setSearchField] = useState('a') // [value, setValue]
+  const [title, setTitle] = useState('')
   const [monsters, setMonsters] = useState([])
   const [filteredMonsters, setFilteredMonsters] = useState(monsters) // initial value is monsters
   // const [stringField, setStringField] = useState('') used to show that the second useEffect only fires when monsters or searchFile changes 
@@ -50,15 +51,23 @@ const App = () => {
     setSearchField(searchFieldString)
   }
 
+  const onTitleChange = (event) => {
+    const searchFieldString = event.target.value.toLowerCase()
+    setTitle(searchFieldString)
+  }
+
   // const onStringChange = (event) => {
   //   setStringField(event.target.value)
   // }
 
   return (
     <div className="App">
-      <h1 className='app-title'>Monsters Rolodex</h1>
+      <h1 className='app-title'>{title}</h1>
       {/* <SearchBox onChangeHandler={onStringChange} placeholder='set string' /> */}
       <SearchBox onChangeHandler={onSearchChange} placeholder='search monsters' className='monsters-search-box' />
+      <br />
+      {/* when using paint flashing tool, whole page flashed/re-painted as title gets added to page changing other elements, but then when typing other characters - only title updates - reflow - paint process - React will ONLY modify relevant changes - virtual DOM tells DOM which nodes need to be repainted */}
+      <SearchBox onChangeHandler={onTitleChange} placeholder='set title' className='title-search-box' />
       <CardList monsters={filteredMonsters} />
     </div>
   )
